@@ -1,0 +1,35 @@
+@model IEnumerable<Student>
+@{ ViewData["Title"] = "Students"; }
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div><h2 class="m-0">Students</h2><span class="meta">Total: <strong>@Model.Count()</strong> students</span></div>
+  <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> New student</a>
+</div>
+<div class="panel mb-3">
+  <form class="row g-2" method="get">
+    <div class="col-md-9"><input name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name or email" /></div>
+    <div class="col-md-3 d-grid"><button class="btn btn-primary"><i class="bi bi-search"></i> Search</button></div>
+  </form>
+</div>
+<div class="panel p-0 overflow-hidden"><div class="table-responsive">
+<table class="table table-modern table-hover">
+  <thead><tr><th class="ps-4">Student</th><th>Phone</th><th>Courses</th><th class="text-end pe-4"></th></tr></thead>
+  <tbody>
+  @foreach (var s in Model)
+  {
+    <tr>
+      <td class="ps-4"><div class="d-flex align-items-center gap-3">
+        <span class="avatar" style="background:@CourseStyle.AvatarColor(s.FullName)">@CourseStyle.Initials(s.FullName)</span>
+        <div><strong>@s.FullName</strong><br /><span class="meta">@s.Email</span></div></div></td>
+      <td class="meta">@s.Phone</td>
+      <td><span class="badge rounded-pill text-bg-light border">@s.Enrollments.Count enrolled</span></td>
+      <td class="text-end pe-4">
+        <div class="d-flex gap-2 justify-content-end">
+          <a class="btn btn-soft btn-sm" asp-action="Details" asp-route-id="@s.Id"><i class="bi bi-eye"></i></a>
+          <a class="btn btn-soft btn-sm" asp-action="Edit" asp-route-id="@s.Id"><i class="bi bi-pencil"></i></a>
+          <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-route-id="@s.Id"><i class="bi bi-trash"></i></a>
+        </div>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table></div></div>

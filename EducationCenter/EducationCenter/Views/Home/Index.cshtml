@@ -1,0 +1,63 @@
+@model List<Course>
+@{
+    ViewData["Title"] = "Home";
+    var cats = (Dictionary<string, int>)ViewBag.CategoryCounts;
+}
+<section class="hero">
+  <span class="hero-chip"><i class="bi bi-stars"></i> New courses starting this month</span>
+  <h1>Learn skills that<br />shape your future.</h1>
+  <p class="lead my-3">Expert instructors, small classes and practical lessons in languages, technology, business, design and more.</p>
+  <a class="btn btn-light btn-lg px-4 me-2" asp-controller="Courses" asp-action="Index">Explore courses</a>
+  <a class="btn btn-outline-light btn-lg px-4" href="#why">Why Bright?</a>
+</section>
+
+<section class="row g-3 stats-row px-2">
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon" style="background:#6366f1"><i class="bi bi-journal-bookmark-fill"></i></div><div><h3>@ViewBag.CourseCount</h3><span>Courses</span></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon" style="background:#10b981"><i class="bi bi-people-fill"></i></div><div><h3>@ViewBag.StudentCount</h3><span>Students</span></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon" style="background:#f59e0b"><i class="bi bi-person-video3"></i></div><div><h3>@ViewBag.InstructorCount</h3><span>Instructors</span></div></div></div>
+  <div class="col-6 col-lg-3"><div class="stat-card"><div class="stat-icon" style="background:#ec4899"><i class="bi bi-patch-check-fill"></i></div><div><h3>@ViewBag.EnrollmentCount</h3><span>Enrollments</span></div></div></div>
+</section>
+
+<h3 class="section-title">Browse by category</h3>
+<div class="row g-3">
+@foreach (var c in CourseStyle.Categories)
+{
+  <div class="col-6 col-md-4 col-lg-2">
+    <a class="category-tile" asp-controller="Courses" asp-action="Index" asp-route-category="@c">
+      <div class="ico" style="background:@CourseStyle.Color(c)"><i class="bi @CourseStyle.Icon(c)"></i></div>
+      <strong>@c</strong><br /><small>@(cats.TryGetValue(c, out var n) ? n : 0) courses</small>
+    </a>
+  </div>
+}
+</div>
+
+<div class="d-flex justify-content-between align-items-end section-title">
+  <h3 class="m-0">Starting soon</h3>
+  <a asp-controller="Courses" asp-action="Index">See all courses <i class="bi bi-arrow-right"></i></a>
+</div>
+<div class="row g-4">
+@foreach (var c in Model)
+{
+  <div class="col-md-6 col-lg-4"><partial name="_CourseCard" model="c" /></div>
+}
+</div>
+
+<h3 class="section-title" id="why">Why students love Bright</h3>
+<div class="row g-3">
+  <div class="col-md-4"><div class="feature"><div class="ico"><i class="bi bi-people"></i></div><h5>Small classes</h5><p class="meta m-0">Limited seats mean more attention and faster progress for every learner.</p></div></div>
+  <div class="col-md-4"><div class="feature"><div class="ico"><i class="bi bi-lightbulb"></i></div><h5>Practical learning</h5><p class="meta m-0">Projects, practice and real-world examples instead of endless theory.</p></div></div>
+  <div class="col-md-4"><div class="feature"><div class="ico"><i class="bi bi-award"></i></div><h5>Expert instructors</h5><p class="meta m-0">Teachers with real industry and teaching experience guide you each week.</p></div></div>
+</div>
+
+<h3 class="section-title">What our students say</h3>
+<div class="row g-3">
+  <div class="col-md-4"><div class="testimonial"><div class="stars mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div><p>“The IELTS course raised my score by a full band. The mock exams were a game changer.”</p><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#6366f1">AM</span><strong>Aydan M.</strong></div></div></div>
+  <div class="col-md-4"><div class="testimonial"><div class="stars mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div><p>“I built my first web app in six weeks. Rashad explains everything clearly and patiently.”</p><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#0ea5e9">MA</span><strong>Murad A.</strong></div></div></div>
+  <div class="col-md-4"><div class="testimonial"><div class="stars mb-2"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></div><p>“Friendly atmosphere and great teachers. I even started a small business after the bootcamp!”</p><div class="d-flex align-items-center gap-2"><span class="avatar" style="background:#ec4899">SH</span><strong>Sabina H.</strong></div></div></div>
+</div>
+
+<div class="cta mt-5">
+  <h2>Ready to start learning?</h2>
+  <p class="opacity-75">Pick a course today. Seats fill up fast!</p>
+  <a class="btn btn-light btn-lg px-4" asp-controller="Courses" asp-action="Index">Find your course</a>
+</div>

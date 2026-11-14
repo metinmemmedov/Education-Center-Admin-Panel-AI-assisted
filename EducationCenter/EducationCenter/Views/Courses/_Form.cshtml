@@ -1,0 +1,27 @@
+@model Course
+<div class="panel col-lg-7">
+<form asp-action="@(Model.Id == 0 ? "Create" : "Edit")" asp-route-id="@(Model.Id == 0 ? (int?)null : Model.Id)" method="post">
+  <input type="hidden" asp-for="Id" />
+  <div class="mb-3"><label asp-for="Title" class="form-label">Course title</label><input asp-for="Title" class="form-control" /><span asp-validation-for="Title" class="text-danger"></span></div>
+  <div class="mb-3"><label asp-for="Instructor" class="form-label"></label><input asp-for="Instructor" class="form-control" /><span asp-validation-for="Instructor" class="text-danger"></span></div>
+  <div class="row">
+    <div class="col-md-6 mb-3"><label asp-for="Category" class="form-label"></label>
+      <select asp-for="Category" asp-items="@(new SelectList(CourseStyle.Categories))" class="form-select"><option value="">Choose...</option></select>
+      <span asp-validation-for="Category" class="text-danger"></span></div>
+    <div class="col-md-6 mb-3"><label asp-for="Level" class="form-label"></label>
+      <select asp-for="Level" asp-items="@(new SelectList(CourseStyle.Levels))" class="form-select"></select></div>
+  </div>
+  <div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="4"></textarea><span asp-validation-for="Description" class="text-danger"></span></div>
+  <div class="row">
+    <div class="col-md-6 mb-3"><label asp-for="Price" class="form-label"></label><input asp-for="Price" class="form-control" /><span asp-validation-for="Price" class="text-danger"></span></div>
+    <div class="col-md-6 mb-3"><label asp-for="Capacity" class="form-label"></label><input asp-for="Capacity" class="form-control" /><span asp-validation-for="Capacity" class="text-danger"></span></div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3"><label asp-for="StartDate" class="form-label"></label><input asp-for="StartDate" type="date" class="form-control" /></div>
+    <div class="col-md-6 mb-3"><label asp-for="Status" class="form-label"></label>
+      <select asp-for="Status" asp-items="@(new SelectList(CourseStyle.Statuses))" class="form-select"></select></div>
+  </div>
+  <button type="submit" class="btn btn-primary px-4">Save</button>
+  <a asp-action="Index" class="btn btn-link">Back</a>
+</form>
+</div>

@@ -1,0 +1,30 @@
+@model Student
+@{ ViewData["Title"] = Model.FullName; }
+<a asp-action="Index" class="meta"><i class="bi bi-arrow-left"></i> Back to students</a>
+<div class="panel mt-2 mb-4 d-flex flex-wrap align-items-center gap-4">
+  <span class="avatar avatar-lg" style="background:@CourseStyle.AvatarColor(Model.FullName)">@CourseStyle.Initials(Model.FullName)</span>
+  <div class="flex-grow-1">
+    <h3 class="m-0">@Model.FullName</h3>
+    <div class="meta"><i class="bi bi-envelope"></i> @Model.Email</div>
+    @if (!string.IsNullOrEmpty(Model.Phone)) { <div class="meta"><i class="bi bi-telephone"></i> @Model.Phone</div> }
+    @if (Model.DateOfBirth.HasValue) { <div class="meta"><i class="bi bi-cake2"></i> @Model.DateOfBirth.Value.ToString("dd MMM yyyy")</div> }
+  </div>
+  <a class="btn btn-primary" asp-controller="Enrollments" asp-action="Create" asp-route-studentId="@Model.Id"><i class="bi bi-plus-lg"></i> Enroll in a course</a>
+</div>
+<div class="panel">
+  <h5 class="mb-3">Enrolled courses (@Model.Enrollments.Count)</h5>
+  <table class="table table-modern">
+    <thead><tr><th>Course</th><th>Enrolled on</th><th>Grade</th></tr></thead>
+    <tbody>
+    @foreach (var e in Model.Enrollments)
+    {
+      <tr>
+        <td><i class="bi @CourseStyle.Icon(e.Course?.Category)" style="color:@CourseStyle.Color(e.Course?.Category)"></i>
+            <a asp-controller="Courses" asp-action="Details" asp-route-id="@e.CourseId">@e.Course?.Title</a></td>
+        <td class="meta">@e.EnrolledOn.ToString("dd MMM yyyy")</td>
+        <td>@if (!string.IsNullOrEmpty(e.Grade)) { <span class="grade">@e.Grade</span> } else { <span class="meta">-</span> }</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>

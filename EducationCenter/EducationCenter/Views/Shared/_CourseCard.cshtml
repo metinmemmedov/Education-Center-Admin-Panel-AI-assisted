@@ -1,0 +1,28 @@
+@model Course
+@{
+    var color = CourseStyle.Color(Model.Category);
+    var taken = Model.Enrollments.Count;
+    var left = Model.Capacity - taken;
+    var pct = Math.Min(100, taken * 100 / Math.Max(1, Model.Capacity));
+    bool started = Model.StartDate < DateTime.Today;
+}
+<div class="card course-card h-100 flex-grow-1">
+  <div class="course-banner" style="background:@color">
+    <span class="level-badge">@Model.Level</span>
+    <span class="status-badge" style="background:@CourseStyle.StatusClass(Model.Status)">@Model.Status</span>
+    <i class="bi @CourseStyle.Icon(Model.Category)"></i>
+  </div>
+  <div class="card-body d-flex flex-column">
+    <div class="meta mb-1" style="color:@color;font-weight:600">@Model.Category</div>
+    <h5 class="mb-1">@Model.Title</h5>
+    <div class="meta mb-2"><i class="bi bi-person"></i> @Model.Instructor</div>
+    <p class="meta flex-grow-1">@Model.Description</p>
+    <div class="meta mb-2"><i class="bi bi-calendar-event"></i> @(started ? "Started" : "Starts") @Model.StartDate.ToString("dd MMM yyyy")</div>
+    <div class="progress mb-1"><div class="progress-bar" style="width:@pct%;background:@color"></div></div>
+    <div class="meta mb-3">@(left > 0 ? $"{left} seats left" : "Course full")</div>
+    <div class="d-flex justify-content-between align-items-center">
+      <span class="price-tag">@Model.Price.ToString("C0")</span>
+      <a class="btn btn-soft btn-sm" asp-controller="Courses" asp-action="Details" asp-route-id="@Model.Id">View details <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+</div>
